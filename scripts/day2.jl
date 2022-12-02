@@ -55,3 +55,59 @@ for i in eachindex(input)
     global total_score += round_score
 end
 println("Total score: ", total_score)
+
+# Star 2
+
+function get_winning_hand(x)
+    # Return the winning hand
+    if x == "A"  # Rock
+        y = "B"
+    elseif x == "B"  # Paper
+        y = "C"
+    else
+        y = "A"
+    end
+
+    return y
+end
+
+function get_loosing_hand(x)
+    # Return the winning hand
+    if x == "A"  # Rock
+        y = "C"
+    elseif x == "B"  # Paper
+        y = "A"
+    else
+        y = "B"
+    end
+
+    return y
+end
+
+function get_star2_score(x, y)
+    # Get score with the correct Star 2 logic
+    if y == "X" # Loss
+        score = 0
+        hand = get_loosing_hand(x)
+    elseif y == "Y" # Draw
+        score = 3
+        hand = x
+    elseif  y == "Z"  # Win
+        score = 6
+        hand = get_winning_hand(x)
+    end
+
+    # Score based on hand
+    score += hand_score(hand)
+
+    return score
+
+end
+
+total_score = 0
+for i in eachindex(input)
+    a = split(input[i], ' ')
+    round_score = get_star2_score(a[1], a[2])
+    global total_score += round_score
+end
+println("Star 2 total score: ", total_score)
