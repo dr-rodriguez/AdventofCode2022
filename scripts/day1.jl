@@ -1,5 +1,9 @@
+# Day 1
 
-sample_input = """1000
+verbose = false
+
+# Sample input
+input = """1000
 2000
 3000
 
@@ -14,30 +18,51 @@ sample_input = """1000
 
 10000"""
 
-sums = Array{Int}
-for i in sample_input
-    print(i)
-end
+# Read from file
+f = open("data/day1.txt", "r")
+input = read(f, String)
+close(f)
 
-findnext('\n', sample_input, 1)
-findnext('\n', sample_input, 6)
-findfirst('\n', sample_input)
-findlast('\n', sample_input)
+input = split(input, '\n')
 
-sample_input[1:5-1]
+# Gather information
+elf_sums = Array{Int, 1}()
+append!(elf_sums, [0])
+elf_num = 1
+for i in eachindex(input)
+    # Get the relevant text
+    text = strip(input[i], '\n')
+    text = strip(input[i], '\r')  # Windows new line
 
-function sum(str, x, y)
-    return convert(Int, str[x:y])
-end
-
-i = 1
-while i <= findlast('\n', sample_input)
-    j = findnext('\n', sample_input, i+1)
-    if isnothing(j)
-        print(sample_input[i:length(sample_input)])
-        break
-    else
-        print(sample_input[i:j-1])
+    # Check if blank line, if so increment the elf number and skip
+    if isempty(text)
+        if verbose 
+            println("New elf!")
+        end
+        global elf_num += 1
+        continue
     end
-    global i = j
+
+    # Store the number of calories for each elf
+    if verbose 
+        println("Elf: ", elf_num, " cals: ", text)
+    end
+    calories = parse(Int, text)
+    if length(elf_sums) < elf_num
+        append!(elf_sums, [0])
+    end
+
+    global elf_sums[elf_num] += calories
+    if verbose 
+        println(elf_sums[elf_num])
+    end
 end
+
+if verbose
+    println(elf_sums)
+end
+
+# Print answer
+println("Maximum and index: ", findmax(elf_sums))
+
+# Star Two
