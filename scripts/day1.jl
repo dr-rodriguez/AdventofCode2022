@@ -66,3 +66,5 @@ end
 println("Maximum and index: ", findmax(elf_sums))
 
 # Star Two
+x = sort(elf_sums, rev=true)
+println("Sum of 3 top elves: ", sum(x[1:3]))
