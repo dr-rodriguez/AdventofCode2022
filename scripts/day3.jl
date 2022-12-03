@@ -13,6 +13,7 @@ f = open("data/day3.txt", "r")
 input = read(f, String)
 close(f)
 
+# Input preparation
 input = replace(input, "\r\n" => "\n")  # Windows new line
 input = split(input, "\n")
 
@@ -59,3 +60,31 @@ for i in eachindex(input)
     global total_priority += priority
 end
 println("Total priority ", total_priority)
+
+# Star 2
+i = 1
+total_priority = 0
+while i < length(input)
+    # Consider first 3 groups
+    sub1 = input[i]
+    sub2 = input[i+1]
+    sub3 = input[i+2]
+
+    # Find common letters for all 3
+    common =  ""
+    for j in sub1
+        if occursin(j, sub2) & occursin(j, sub3) & !occursin(j, common)
+            common = string(common, j)
+        end
+    end
+
+    # Count up the priority
+    priority = 0
+    for letter in common
+        priority += get_number(letter)
+    end
+
+    global total_priority += priority
+    global i += 3
+end
+println("Priorities in groups ", total_priority)
