@@ -36,3 +36,24 @@ for line in input
     end
 end
 println("Assignment pairs: ", count)
+
+# Star 2
+
+function any_overlap(a, b, c, d)
+    # Check for any any overlap
+    sub1 = collect(a:b)
+    sub2 = collect(c:d)
+    check = [s in sub2 for s in sub1]
+    return any(check)
+end
+
+count = 0
+for line in input
+    el = split(line, (',','-'))
+    el = parse.(Int32, el)
+    
+    if any_overlap(el...) | any_overlap(el[3], el[4], el[1], el[2])
+        global count+=1 
+    end
+end
+println("Any overlap: ", count)
