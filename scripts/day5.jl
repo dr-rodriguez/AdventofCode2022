@@ -32,6 +32,7 @@ stacks = [
     split("PFV",""),
     split("DRSTJ","")
     ]
+original_stacks = deepcopy(stacks)
 
 # Input preparation
 input = replace(input, "\r\n" => "\n")  # Windows new line
@@ -57,7 +58,36 @@ for line in input
     end
 
 end
-println("Top of each stack:")
+print("Top of each stack: ")
+for ln in stacks
+    print(last(ln))
+end
+println("")
+
+# Star 2
+stacks = deepcopy(original_stacks)
+
+for line in input
+    # Skip non-move lines
+    if !startswith(line, "move")
+        continue
+    end
+
+    # Identify move information
+    a = match(r"move (\d+) from (\d+) to (\d+)", line)
+    moves, ind_start, ind_end = parse.(Int32, a)
+
+    # Perform moves
+    crate_set = ""
+    while moves > 0
+        crate = pop!(stacks[ind_start])
+        crate_set = string(crate_set, crate)
+        moves -= 1
+    end
+    append!(stacks[ind_end], split(reverse(crate_set), ""))
+end
+
+print("Top of each stack: ")
 for ln in stacks
     print(last(ln))
 end
